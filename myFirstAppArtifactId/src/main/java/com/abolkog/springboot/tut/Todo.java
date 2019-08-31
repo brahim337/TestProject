@@ -20,13 +20,14 @@ public class Todo {
 		this.name = name;
 	}
 
-	
-
 	public Todo(int i2, String name2) {
 		// TODO Auto-generated constructor stub
-	i=i2;
-	name=name2;
-	
+		i = i2;
+		name = name2;
+	}
+
+	public Todo() {
+
 	}
 
 }
