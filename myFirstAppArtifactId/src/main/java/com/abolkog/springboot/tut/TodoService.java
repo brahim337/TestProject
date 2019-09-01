@@ -4,47 +4,38 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class TodoService {
 
-	private List<Todo> data = new ArrayList<>(Arrays.asList(
-
-			new Todo(1, "first Todo"), new Todo(2, "second Todo"), new Todo(3, "third Todo"),
-			new Todo(4, "fourth Todo"), new Todo(5, "fifth Todo"), new Todo(6, "sixth Todo"),
-			new Todo(7, "seventh Todo"), new Todo(8, "eight Todo")
-
-	));
-
-	public Todo getById(int id) {
-
-		for (Todo todo : data) {
-			if (todo.getI() == id)
-				return todo;
-		}
-		return null;
-	}
-
+	@Autowired
+	private TodosRepositories todoRepositories;
+	
 	public List<Todo> findAll() {
 		// TODO Auto-generated method stub
-		return data;
+		return todoRepositories.findAll();
 	}
-
 	
 
-	public boolean save(Todo todo) {
+	public Todo getById(String id) {
+
+		return todoRepositories.findById(id).get();
+		
+	}
+
+	public Todo save(Todo todo) {
 		// TODO Auto-generated method stub
-		return data.add(todo);
+		return todoRepositories.insert(todo);
 	}
 	
-	public void delete(int id) {
-		for (Todo todo: data) {
-			if(todo.getI()== id) 
-				data.remove(todo);
+	public void delete(String id) {
+		
+		todoRepositories.deleteById(id);		
+		
 				
-				return ;
 		}
-	}
+	
 
 }

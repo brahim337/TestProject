@@ -1,15 +1,35 @@
 package com.abolkog.springboot.tut;
 
-public class Todo {
-	private int i;
-	private String name;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-	public int getI() {
-		return i;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "Todos")
+public class Todo {
+	@Id
+	private String id;
+
+	@NotNull(message="Title is required")
+	@Size(min =3 , message="Title must be at least 3 character long")
+	private String name;
+	private Long timeStamp;
+
+	public Long getTimeStamp() {
+		return timeStamp;
 	}
 
-	public void setI(int i) {
-		this.i = i;
+	public void setTimeStamp(Long timeStamp) {
+		this.timeStamp = timeStamp;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -20,14 +40,16 @@ public class Todo {
 		this.name = name;
 	}
 
-	public Todo(int i2, String name2) {
+	public Todo(String i2, String name2) {
 		// TODO Auto-generated constructor stub
-		i = i2;
+		id = i2;
 		name = name2;
+		timeStamp = System.currentTimeMillis();
+
 	}
 
 	public Todo() {
-
+		timeStamp = System.currentTimeMillis();
 	}
 
 }

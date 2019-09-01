@@ -2,7 +2,11 @@ package com.abolkog.springboot.tut;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,30 +23,33 @@ public class TodoController {
 	private TodoService todoServices;
 
 	@GetMapping(value = { "", "/" })
-	public List<Todo> getAllTodos() {
-		return todoServices.findAll();
+	public ResponseEntity<List<Todo>> getAllTodos() {
+		List<Todo> result = todoServices.findAll();
+		return new ResponseEntity<>(result, HttpStatus.OK);
+
 	}
 
 	@GetMapping("/{id}")
-	public Todo getTodoById(@PathVariable int id) {
-		return todoServices.getById(id);
-	}
-	
-	@PostMapping(value= {"","/"})
-	public Todo createNewTodo(@RequestBody Todo todo) {
-		if(todoServices.save(todo)) {
-			return todo;
-		}
-		return null;
+	public ResponseEntity<Todo> getTodoById(@PathVariable String id) {
+		Todo result = todoServices.getById(id);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+
 	}
 
-	@DeleteMapping ("/{id}")
-	public void deleteTodo(@PathVariable int id) {
-		todoServices.delete(id);
+	@PostMapping(value = { "", "/" })
+	public ResponseEntity<Todo> createNewTodo(@Valid @RequestBody Todo todo) {
+
+		Todo result = todoServices.save(todo);
+		return new ResponseEntity<>(result, HttpStatus.CREATED);
+
 	}
-	
-	
-	
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteTodo(@PathVariable String id) {
+		todoServices.delete(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+
 }
 
 //<dependency>
@@ -50,5 +57,3 @@ public class TodoController {
 //<artifactId>spring-boot-devtools</artifactId>
 //<scope>runtime</scope>
 //</dependency>
-
-
